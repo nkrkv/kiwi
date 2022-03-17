@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react';
+import Typography from '@material-ui/core/Typography';
+import DoorList from '../src/DoorList';
 
 function fetchDoors() {
   return fetch('http://localhost:8100/doors/')
@@ -23,19 +25,10 @@ export default function Home() {
 
   return (
     <main>
-      <h1 className="title">
-        Welcome to Kiwi
-      </h1>
-
-      <ul>
-        {doors.map(door =>
-          <li key={door.id}>
-            {door.name}
-            {", "}
-            {door.street}
-          </li>
-        )}
-      </ul>
+      <Typography variant="h1" component="h1">
+        Doors
+      </Typography>
+      <DoorList doors={doors} />
     </main>
   )
 }
