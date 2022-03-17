@@ -5,6 +5,8 @@ import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
+import TableFooter from '@material-ui/core/TableFooter';
+import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
 import Timestamp from './Timestamp';
 
@@ -14,7 +16,15 @@ const useStyles = makeStyles({
   },
 });
 
-export default function DoorList({ doors, onDoorClick }) {
+export default function DoorList({
+  doors,
+  doorCount,
+  doorsPerPage,
+  currentPage,
+  onDoorClick,
+  onPageChange,
+  onDoorsPerPageChange,
+}) {
   const classes = useStyles();
   return (
     <TableContainer>
@@ -59,6 +69,19 @@ export default function DoorList({ doors, onDoorClick }) {
             );
           })}
         </TableBody>
+        <TableFooter>
+          <TableRow>
+            <TablePagination
+              rowsPerPageOptions={[20, 50, 100]}
+              labelRowsPerPage="Doors per page:"
+              count={doorCount}
+              rowsPerPage={doorsPerPage}
+              page={currentPage}
+              onPageChange={onPageChange}
+              onRowsPerPageChange={onDoorsPerPageChange}
+            />
+          </TableRow>
+        </TableFooter>
       </Table>
     </TableContainer>
   );
