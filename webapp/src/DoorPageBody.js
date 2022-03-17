@@ -14,7 +14,7 @@ function NoUsers() {
 }
 
 export default function DoorPage({ door }) {
-  const title = `(#${door.id}) ${door.name}, ${door.street}`;
+  const title = `(#${door.id}) ${door.street}, ${door.name}`;
   const users = door.authorized_users;
   return (
     <Grid container spacing={4} direction="column">

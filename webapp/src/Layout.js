@@ -6,30 +6,38 @@ import Container from '@material-ui/core/Container';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
+import IconButton from '@material-ui/core/IconButton';
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 
 const useStyles = makeStyles((theme) => ({
   container: {
-    paddingTop: theme.spacing(2),
+    paddingTop: theme.spacing(4),
     paddingBottom: theme.spacing(8),
   },
 }));
 
-export default function Layout({ children }) {
+export default function Layout({ pageTitle, appBarTitle, backButtonHref, children }) {
   const classes = useStyles();
+
+  const backButton = backButtonHref
+    ? <NextLink href={backButtonHref} passHref>
+        <IconButton edge="start" color="inherit"> <ArrowBackIcon style={{color: "#ffffff"}}  /> </IconButton>
+      </NextLink>
+    : null;
 
   return (
     <>
       <Head>
-        <title>Doors -- Kiwi</title>
+        <title>{pageTitle} -- Kiwi</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
       <AppBar position="static">
         <Toolbar>
-          <Typography variant="h6">
-            <NextLink href="/" passHref>
-              <MuiLink color="inherit">KIWI</MuiLink>
-            </NextLink>
+          { backButton }
+          <Typography variant="h6" style={{color: "#ffffff"}}>
+            {"KIWI ⚬ "}
+            {appBarTitle || pageTitle}
           </Typography>
         </Toolbar>
       </AppBar>

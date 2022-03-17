@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router'
 import Typography from '@material-ui/core/Typography';
 import DoorList from '../src/DoorList';
+import Layout from '../src/Layout';
 import urls from '../src/urls';
 
 async function fetchDoors({ skip, limit }) {
@@ -57,7 +58,7 @@ export default function Home() {
   };
 
   return (
-    <main>
+    <Layout pageTitle="All Doors">
       <Typography variant="h1" component="h1">
         Doors
       </Typography>
@@ -70,6 +71,6 @@ export default function Home() {
         onDoorsPerPageChange={handleDoorsPerPageChange}
         onDoorClick={handleDoorClick}
       />
-    </main>
+    </Layout>
   )
 }

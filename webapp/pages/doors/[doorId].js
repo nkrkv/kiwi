@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router'
 import LinearProgress from '@material-ui/core/LinearProgress';
 import DoorPageBody from '../../src/DoorPageBody';
+import Layout from '../../src/Layout';
 import urls from '../../src/urls';
 
 function fetchDoor(doorId) {
@@ -30,9 +31,21 @@ export default function DoorPage() {
   }, [doorId]);
 
   if (content.stage === "ready") {
-    return <DoorPageBody door={content.door} />
+    return (
+      <Layout
+        pageTitle={`${content.door.street}, ${content.door.name}`}
+        appBarTitle="Door Details"
+        backButtonHref="/"
+      >
+        <DoorPageBody door={content.door} />
+      </Layout>
+    )
   } else {
-    return <LinearProgress color="secondary" />
+    return (
+      <Layout pageTitle="Loading…" appBarTitle="Door Details" backButtonHref="/">
+        <LinearProgress color="secondary" />
+      </Layout>
+    );
     // TODO: also handle server errors here
   }
 }
