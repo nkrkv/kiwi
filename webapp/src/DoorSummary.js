@@ -46,6 +46,15 @@ export default function DoorDetails({ door }) {
             <TableCell variant="head"> Country </TableCell>
             <TableCell>{door.country_code}</TableCell>
           </TableRow>
+          <TableRow>
+            <TableCell variant="head"> Geo </TableCell>
+            <TableCell>
+              {door.longitude}
+              {"’ "}
+              {door.latitude}
+              {"’"}
+            </TableCell>
+          </TableRow>
         </TableBody>
       </Table>
     </TableContainer>
