@@ -1,8 +1,17 @@
 import records
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 
 db = records.Database()
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 @app.get("/")
 async def root():
@@ -13,6 +22,7 @@ async def doors(skip: int = 0, limit: int = 10):
     rows = db.query(
         """
         SELECT
+          doors.id,
           doors.name,
           addresses.street,
           addresses.postal_code,
