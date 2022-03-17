@@ -1,17 +1,13 @@
-import Typography from '@material-ui/core/Typography';
-import Grid from '@material-ui/core/Grid';
-import Paper from '@material-ui/core/Paper';
-import DoorSummary from './DoorSummary';
-import DoorActivity from './DoorActivity';
-import DoorOnMap from './DoorOnMap';
-import AuthorizedUserList from './AuthorizedUserList';
+import Typography from "@material-ui/core/Typography";
+import Grid from "@material-ui/core/Grid";
+import Paper from "@material-ui/core/Paper";
+import DoorSummary from "./DoorSummary";
+import DoorActivity from "./DoorActivity";
+import DoorOnMap from "./DoorOnMap";
+import AuthorizedUserList from "./AuthorizedUserList";
 
 function NoUsers() {
-  return (
-    <Typography variant="body2">
-      No user can access this door
-    </Typography>
-  );
+  return <Typography variant="body2">No user can access this door</Typography>;
 }
 
 export default function DoorPage({ door }) {
@@ -42,11 +38,7 @@ export default function DoorPage({ door }) {
         <Typography variant="h4" component="h2" paragraph>
           Authorized Users
         </Typography>
-        {
-          users.length > 0
-          ? <AuthorizedUserList users={users} />
-          : <NoUsers />
-        }
+        {users.length > 0 ? <AuthorizedUserList users={users} /> : <NoUsers />}
       </Grid>
     </Grid>
   );

@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import { useRouter } from 'next/router'
-import Typography from '@material-ui/core/Typography';
-import DoorList from '../src/DoorList';
-import Layout from '../src/Layout';
-import urls from '../src/urls';
+import React, { useEffect, useState } from "react";
+import { useRouter } from "next/router";
+import Typography from "@material-ui/core/Typography";
+import DoorList from "../src/DoorList";
+import Layout from "../src/Layout";
+import urls from "../src/urls";
 
 async function fetchDoors({ skip, limit }) {
   const resp = await fetch(urls.api.doors({ skip: skip, limit: limit }));
@@ -13,11 +13,11 @@ async function fetchDoors({ skip, limit }) {
   return {
     doors: doors,
     totalCount: totalCount,
-  }
+  };
 }
 
 export default function Home() {
-  const router = useRouter()
+  const router = useRouter();
   const [doors, setDoors] = useState([]);
   const [doorCount, setDoorCount] = useState(1);
   const [pagination, setPagination] = useState({
@@ -30,16 +30,15 @@ export default function Home() {
     fetchDoors({
       skip: pagination.currentPage * pagination.doorsPerPage,
       limit: pagination.doorsPerPage,
-    })
-      .then(({ doors, totalCount }) => {
-        if (mounted) {
-          setDoors(doors);
-          setDoorCount(totalCount);
-        }
-      });
+    }).then(({ doors, totalCount }) => {
+      if (mounted) {
+        setDoors(doors);
+        setDoorCount(totalCount);
+      }
+    });
 
     // Effect cleanup
-    return () => mounted = false;
+    return () => (mounted = false);
   }, [pagination.doorsPerPage, pagination.currentPage]);
 
   function handleDoorClick(e, doorId) {
@@ -47,7 +46,7 @@ export default function Home() {
   }
 
   function handlePageChange(e, newPage) {
-    setPagination(p => Object.assign({}, p, {currentPage: newPage}));
+    setPagination((p) => Object.assign({}, p, { currentPage: newPage }));
   }
 
   function handleDoorsPerPageChange(e) {
@@ -55,7 +54,7 @@ export default function Home() {
       doorsPerPage: parseInt(e.target.value, 10),
       currentPage: 0,
     });
-  };
+  }
 
   return (
     <Layout pageTitle="All Doors">
@@ -72,5 +71,5 @@ export default function Home() {
         onDoorClick={handleDoorClick}
       />
     </Layout>
-  )
+  );
 }

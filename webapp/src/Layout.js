@@ -1,13 +1,13 @@
-import Head from 'next/head';
-import NextLink from 'next/link';
-import MuiLink from '@material-ui/core/Link';
-import { makeStyles } from '@material-ui/core/styles';
-import Container from '@material-ui/core/Container';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import IconButton from '@material-ui/core/IconButton';
-import ArrowBackIcon from '@material-ui/icons/ArrowBack';
+import Head from "next/head";
+import NextLink from "next/link";
+import MuiLink from "@material-ui/core/Link";
+import { makeStyles } from "@material-ui/core/styles";
+import Container from "@material-ui/core/Container";
+import AppBar from "@material-ui/core/AppBar";
+import Toolbar from "@material-ui/core/Toolbar";
+import Typography from "@material-ui/core/Typography";
+import IconButton from "@material-ui/core/IconButton";
+import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -16,14 +16,22 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Layout({ pageTitle, appBarTitle, backButtonHref, children }) {
+export default function Layout({
+  pageTitle,
+  appBarTitle,
+  backButtonHref,
+  children,
+}) {
   const classes = useStyles();
 
-  const backButton = backButtonHref
-    ? <NextLink href={backButtonHref} passHref>
-        <IconButton edge="start" color="inherit"> <ArrowBackIcon style={{color: "#ffffff"}}  /> </IconButton>
-      </NextLink>
-    : null;
+  const backButton = backButtonHref ? (
+    <NextLink href={backButtonHref} passHref>
+      <IconButton edge="start" color="inherit">
+        {" "}
+        <ArrowBackIcon style={{ color: "#ffffff" }} />{" "}
+      </IconButton>
+    </NextLink>
+  ) : null;
 
   return (
     <>
@@ -34,8 +42,8 @@ export default function Layout({ pageTitle, appBarTitle, backButtonHref, childre
 
       <AppBar position="static">
         <Toolbar>
-          { backButton }
-          <Typography variant="h6" style={{color: "#ffffff"}}>
+          {backButton}
+          <Typography variant="h6" style={{ color: "#ffffff" }}>
             {"KIWI ⚬ "}
             {appBarTitle || pageTitle}
           </Typography>

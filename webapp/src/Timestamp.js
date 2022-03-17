@@ -1,4 +1,3 @@
-
 export default function Timestamp({ value }) {
   if (!value) {
     return "N/A";

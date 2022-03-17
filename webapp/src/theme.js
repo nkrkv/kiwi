@@ -15,4 +15,3 @@ export const themeBase = createTheme({
 });
 
 export const theme = responsiveFontSizes(themeBase);
-
