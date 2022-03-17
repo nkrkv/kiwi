@@ -2,9 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router'
 import Typography from '@material-ui/core/Typography';
 import DoorList from '../src/DoorList';
+import urls from '../src/urls';
 
 async function fetchDoors({ skip, limit }) {
-  const resp = await fetch(`http://localhost:8100/doors/?skip=${skip}&limit=${limit}`);
+  const resp = await fetch(urls.api.doors({ skip: skip, limit: limit }));
   const totalCount = parseInt(resp.headers.get("X-Total-Count"));
   const doors = await resp.json();
 
@@ -41,7 +42,7 @@ export default function Home() {
   }, [pagination.doorsPerPage, pagination.currentPage]);
 
   function handleDoorClick(e, doorId) {
-    router.push(`/doors/${doorId}`);
+    router.push(urls.doorDetails(doorId));
   }
 
   function handlePageChange(e, newPage) {

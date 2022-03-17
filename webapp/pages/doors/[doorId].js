@@ -2,9 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router'
 import LinearProgress from '@material-ui/core/LinearProgress';
 import DoorPageBody from '../../src/DoorPageBody';
+import urls from '../../src/urls';
 
 function fetchDoor(doorId) {
-  return fetch(`http://localhost:8100/doors/${doorId}/`)
+  return fetch(urls.api.door(doorId))
     .then(data => data.json())
 }
 
