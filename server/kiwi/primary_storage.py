@@ -41,7 +41,9 @@ class Storage:
               addresses.postal_code,
               addresses.city,
               addresses.state,
-              addresses.country_code
+              addresses.country_code,
+              addresses.geolocation[0] as longitude,
+              addresses.geolocation[1] as latitude
             FROM doors
             LEFT JOIN addresses
             ON doors.address_id = addresses.id
