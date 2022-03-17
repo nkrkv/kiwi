@@ -11,6 +11,6 @@ class Storage:
         ])
 
         return {
-            "last_communication": values[0],
+            "last_communication_ts": values[0],
             "last_opening_ts": values[1],
         }

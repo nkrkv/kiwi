@@ -2,6 +2,7 @@ import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import DoorSummary from './DoorSummary';
+import DoorActivity from './DoorActivity';
 import AuthorizedUserList from './AuthorizedUserList';
 
 function NoUsers() {
@@ -26,12 +27,18 @@ export default function DoorPage({ door }) {
         <DoorSummary door={door} />
       </Grid>
       <Grid item>
-        <Typography variant="h4" component="h2">
+        <Typography variant="h4" component="h2" paragraph>
+          Latest Activity
+        </Typography>
+        <DoorActivity activity={door.activity} />
+      </Grid>
+      <Grid item>
+        <Typography variant="h4" component="h2" paragraph>
           Authorized Users
         </Typography>
         {
           users.length > 0
-          ? <AuthorizedUserList users={door.authorized_users} />
+          ? <AuthorizedUserList users={users} />
           : <NoUsers />
         }
       </Grid>
