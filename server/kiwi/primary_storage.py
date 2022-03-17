@@ -27,6 +27,9 @@ class Storage:
             limit=limit,
         ).as_dict()
 
+    def read_door_count(self):
+        return self.db.query("""SELECT COUNT(doors.id) FROM doors""").first()[0]
+
     def read_door(self, door_id: int):
         row = self.db.query(
             """

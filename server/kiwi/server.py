@@ -2,7 +2,7 @@ import records
 import kiwi.primary_storage
 import kiwi.activity_storage
 
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, Response, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 
 primary_storage = kiwi.primary_storage.Storage()
@@ -15,6 +15,7 @@ app.add_middleware(
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
+    expose_headers=["X-Total-Count"],
 )
 
 
@@ -27,10 +28,13 @@ async def root():
 
 
 @app.get("/doors/")
-async def doors(skip: int = 0, limit: int = 10):
+async def doors(response: Response, skip: int = 0, limit: int = 10):
     doors = primary_storage.read_doors(skip=skip, limit=limit)
     sensor_uuids = [door["sensor_uuid"] for door in doors]
     last_comms = activity_storage.bulk_read_last_communication(sensor_uuids)
+    # There’s no clear consensus on how the total record count should be
+    # reported. Using a custom header is one possible way to solve the problem
+    response.headers["X-Total-Count"] = str(primary_storage.read_door_count())
     return [
         door | {"activity": {"last_communication_ts": last_comm}}
         for (door, last_comm) in zip(doors, last_comms)
