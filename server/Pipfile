@@ -8,6 +8,7 @@ fastapi = "*"
 records = "*"
 uvicorn = {extras = ["standard"], version = "*"}
 psycopg2 = "*"
+redis = "*"
 
 [dev-packages]
 
