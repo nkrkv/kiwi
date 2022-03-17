@@ -7,7 +7,7 @@ import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import Avatar from '@material-ui/core/Avatar';
 import CheckIcon from '@material-ui/icons/Check';
 
-export default function DoorList({ doors }) {
+export default function DoorList({ doors, onDoorClick }) {
   return (
     <List>
       {doors.map(door => {
@@ -30,7 +30,7 @@ export default function DoorList({ doors }) {
           </>
 
         return (
-          <ListItem key={door.id}>
+          <ListItem key={door.id} button onClick={e => onDoorClick(e, door.id)}>
             <ListItemAvatar>
               <Avatar>
                 <CheckIcon />
