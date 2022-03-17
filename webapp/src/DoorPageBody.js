@@ -3,6 +3,7 @@ import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import DoorSummary from './DoorSummary';
 import DoorActivity from './DoorActivity';
+import DoorOnMap from './DoorOnMap';
 import AuthorizedUserList from './AuthorizedUserList';
 
 function NoUsers() {
@@ -23,8 +24,13 @@ export default function DoorPage({ door }) {
           {title}
         </Typography>
       </Grid>
-      <Grid item>
-        <DoorSummary door={door} />
+      <Grid item container>
+        <Grid item md={4} sm={12}>
+          <DoorSummary door={door} />
+        </Grid>
+        <Grid item md={8} sm={12}>
+          <DoorOnMap lon={door.longitude} lat={door.latitude} />
+        </Grid>
       </Grid>
       <Grid item>
         <Typography variant="h4" component="h2" paragraph>
