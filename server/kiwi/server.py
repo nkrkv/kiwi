@@ -1,8 +1,10 @@
 import records
+import kiwi.primary_storage
+
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 
-db = records.Database()
+primary_storage = kiwi.primary_storage.Storage()
 app = FastAPI()
 
 app.add_middleware(
@@ -24,70 +26,18 @@ async def root():
 
 @app.get("/doors/")
 async def doors(skip: int = 0, limit: int = 10):
-    rows = db.query(
-        """
-        SELECT
-          doors.id,
-          doors.name,
-          addresses.street,
-          addresses.postal_code,
-          addresses.city,
-          addresses.state,
-          addresses.country_code
-        FROM doors
-        LEFT JOIN addresses
-        ON doors.address_id = addresses.id
-        ORDER BY doors.id
-        LIMIT :limit
-        OFFSET :offset
-        """,
-        offset=skip,
-        limit=limit,
-    )
-
-    return rows.as_dict()
+    return primary_storage.read_doors(skip=skip, limit=limit)
 
 
 @app.get("/doors/{door_id}/")
 async def doors(door_id: int):
-    door_row = db.query(
-        """
-        SELECT
-          doors.id,
-          doors.name,
-          addresses.street,
-          addresses.postal_code,
-          addresses.city,
-          addresses.state,
-          addresses.country_code
-        FROM doors
-        LEFT JOIN addresses
-        ON doors.address_id = addresses.id
-        WHERE doors.id = :door_id
-        """,
-        door_id=door_id,
-    ).first()
+    door = primary_storage.read_door(door_id)
 
-    if not door_row:
+    if not door:
         raise HTTPException(status_code=404, detail="Door not found")
 
     # Assuming a particular door is accessed by at most 100-200 people,
     # it is OK to just list them all in the response without the need
     # for a separate API call, pagination, etc.
-    user_rows = db.query(
-        """
-        SELECT
-          user_door_permissions.user_id,
-          users.email,
-          users.first_name,
-          users.last_name
-        FROM user_door_permissions
-        LEFT JOIN users
-        ON user_door_permissions.user_id = users.id
-        WHERE user_door_permissions.door_id = :door_id
-        ORDER BY users.last_name
-        """,
-        door_id=door_id,
-    )
-
-    return door_row.as_dict() | {"authorized_users": user_rows.as_dict()}
+    users = primary_storage.read_authorized_users(door_id)
+    return door | {"authorized_users": users}
