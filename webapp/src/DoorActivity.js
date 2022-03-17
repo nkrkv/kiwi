@@ -5,20 +5,13 @@ import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
+import Timestamp from './Timestamp';
 
 const useStyles = makeStyles({
   table: {
     width: "auto",
   },
 });
-
-function Timestamp({ value }) {
-  if (!value) {
-    return "N/A";
-  }
-
-  return new Date(value * 1000).toLocaleString("de-DE");
-}
 
 export default function DoorActivity({ activity }) {
   const classes = useStyles();
