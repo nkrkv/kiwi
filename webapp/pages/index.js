@@ -3,14 +3,21 @@ import { useRouter } from 'next/router'
 import Typography from '@material-ui/core/Typography';
 import DoorList from '../src/DoorList';
 
-function fetchDoors({ skip, limit }) {
-  return fetch(`http://localhost:8100/doors/?skip=${skip}&limit=${limit}`)
-    .then(data => data.json())
+async function fetchDoors({ skip, limit }) {
+  const resp = await fetch(`http://localhost:8100/doors/?skip=${skip}&limit=${limit}`);
+  const totalCount = parseInt(resp.headers.get("X-Total-Count"));
+  const doors = await resp.json();
+
+  return {
+    doors: doors,
+    totalCount: totalCount,
+  }
 }
 
 export default function Home() {
   const router = useRouter()
   const [doors, setDoors] = useState([]);
+  const [doorCount, setDoorCount] = useState(1);
   const [pagination, setPagination] = useState({
     doorsPerPage: 20,
     currentPage: 0,
@@ -22,9 +29,10 @@ export default function Home() {
       skip: pagination.currentPage * pagination.doorsPerPage,
       limit: pagination.doorsPerPage,
     })
-      .then(doors => {
+      .then(({ doors, totalCount }) => {
         if (mounted) {
-          setDoors(doors)
+          setDoors(doors);
+          setDoorCount(totalCount);
         }
       });
 
@@ -54,7 +62,7 @@ export default function Home() {
       </Typography>
       <DoorList
         doors={doors}
-        doorCount={50 /* TODO: unhardcode */}
+        doorCount={doorCount}
         doorsPerPage={pagination.doorsPerPage}
         currentPage={pagination.currentPage}
         onPageChange={handlePageChange}
