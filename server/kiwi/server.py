@@ -1,10 +1,12 @@
 import records
 import kiwi.primary_storage
+import kiwi.activity_storage
 
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 
 primary_storage = kiwi.primary_storage.Storage()
+activity_storage = kiwi.activity_storage.Storage()
 app = FastAPI()
 
 app.add_middleware(
@@ -40,4 +42,8 @@ async def doors(door_id: int):
     # it is OK to just list them all in the response without the need
     # for a separate API call, pagination, etc.
     users = primary_storage.read_authorized_users(door_id)
-    return door | {"authorized_users": users}
+    activity = activity_storage.read(door["sensor_uuid"])
+    return door | {
+        "activity": activity,
+        "authorized_users": users,
+    }
