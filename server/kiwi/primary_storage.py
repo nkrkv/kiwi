@@ -1,5 +1,6 @@
 import records
 
+
 class Storage:
     def __init__(self, db=None):
         self.db = db or records.Database()
