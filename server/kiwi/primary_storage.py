@@ -10,6 +10,7 @@ class Storage:
             SELECT
               doors.id,
               doors.name,
+              doors.sensor_uuid,
               addresses.street,
               addresses.postal_code,
               addresses.city,

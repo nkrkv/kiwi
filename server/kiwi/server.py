@@ -28,7 +28,13 @@ async def root():
 
 @app.get("/doors/")
 async def doors(skip: int = 0, limit: int = 10):
-    return primary_storage.read_doors(skip=skip, limit=limit)
+    doors = primary_storage.read_doors(skip=skip, limit=limit)
+    sensor_uuids = [door["sensor_uuid"] for door in doors]
+    last_comms = activity_storage.bulk_read_last_communication(sensor_uuids)
+    return [
+        door | {"activity": {"last_communication_ts": last_comm}}
+        for (door, last_comm) in zip(doors, last_comms)
+    ]
 
 
 @app.get("/doors/{door_id}/")
