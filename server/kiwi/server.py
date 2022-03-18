@@ -28,6 +28,7 @@ async def root():
     return {
         "doors_url": "/doors/{?skip,limit}",
         "door_url": "/doors/{door_id}/",
+        "users_url": "/users/{?skip,limit,q}/",
     }
 
 
@@ -46,7 +47,7 @@ async def doors(response: Response, skip: int = 0, limit: int = 10):
 
 
 @app.get("/doors/{door_id}/")
-async def doors(door_id: int):
+async def door(door_id: int):
     door = primary_storage.read_door(door_id)
 
     if not door:
@@ -61,3 +62,8 @@ async def doors(door_id: int):
         "activity": activity,
         "authorized_users": users,
     }
+
+
+@app.get("/users/")
+async def users(response: Response, skip: int = 0, limit: int = 10, q: str = ""):
+    return primary_storage.read_users(skip=skip, limit=limit, query=q)

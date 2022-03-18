@@ -74,3 +74,34 @@ class Storage:
             """,
             door_id=door_id,
         ).as_dict()
+
+    def read_users(self, skip: int, limit: int, query: str):
+        if not query:
+            where_clause = ""
+        else:
+            where_clause = """
+                WHERE
+                  users.first_name ILIKE :pattern OR
+                  users.last_name ILIKE :pattern
+                """
+
+        sql = "\n".join(
+            [
+                """
+                SELECT
+                  users.id,
+                  users.first_name,
+                  users.last_name
+                FROM users
+                """,
+                where_clause,
+                """
+                LIMIT :limit
+                OFFSET :offset
+                """,
+            ]
+        )
+
+        return self.db.query(
+            sql, offset=skip, limit=limit, pattern=query + "%"
+        ).as_dict()
