@@ -18,6 +18,7 @@ export default function DoorPage() {
   });
 
   const [isUserDialogOpen, setUserDialogOpen] = useState(false);
+  const [checkedUserIds, setCheckedUserIds] = useState([]);
 
   useEffect(() => {
     if (typeof doorId !== "undefined") {
@@ -33,6 +34,16 @@ export default function DoorPage() {
     return null;
   }, [doorId]);
 
+  function updateAuthorizedUsers(newAuthorizedUsers) {
+    setContent((content) =>
+      Object.assign({}, content, {
+        door: Object.assign({}, content.door, {
+          authorized_users: newAuthorizedUsers,
+        }),
+      })
+    );
+  }
+
   async function handleUserAccessSelected(user) {
     setUserDialogOpen(false);
     const resp = await fetch(urls.api.doorPermissions(doorId), {
@@ -42,13 +53,26 @@ export default function DoorPage() {
     });
 
     const newAuthorizedUsers = await resp.json();
-    setContent((content) =>
-      Object.assign({}, content, {
-        door: Object.assign({}, content.door, {
-          authorized_users: newAuthorizedUsers,
-        }),
-      })
-    );
+    updateAuthorizedUsers(newAuthorizedUsers);
+  }
+
+  function handleUserCheckChanged(e, userId) {
+    if (checkedUserIds.includes(userId)) {
+      setCheckedUserIds((ids) => ids.filter((id) => id !== userId));
+    } else {
+      setCheckedUserIds((ids) => [userId, ...ids]);
+    }
+  }
+
+  async function handleRevokeAccessClick() {
+    const resp = await fetch(urls.api.doorPermissions(doorId), {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ user_ids: checkedUserIds }),
+    });
+
+    const newAuthorizedUsers = await resp.json();
+    updateAuthorizedUsers(newAuthorizedUsers);
   }
 
   if (content.stage === "ready") {
@@ -60,7 +84,10 @@ export default function DoorPage() {
       >
         <DoorPageBody
           door={content.door}
+          checkedUserIds={checkedUserIds}
+          onUserCheckChanged={handleUserCheckChanged}
           onGrantAccessClick={() => setUserDialogOpen(true)}
+          onRevokeAccessClick={() => handleRevokeAccessClick()}
         />
         <UserSearchDialog
           title="Grant Access to..."

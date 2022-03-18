@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
@@ -40,6 +40,15 @@ export default function UserSearchDialog({
       fetchUsers(value).then((users) => setOptions(users));
     }
   };
+
+  useEffect(() => {
+    // Clear on re-appear
+    if (open) {
+      setValue(null);
+    }
+    // Effect clean-up
+    return null;
+  }, [open]);
 
   return (
     <Dialog onClose={onClose} open={open}>
