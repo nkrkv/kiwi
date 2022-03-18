@@ -113,5 +113,5 @@ class Storage:
             INSERT INTO user_door_permissions (door_id, user_id)
             VALUES (:door_id, :user_id)
             """,
-            values
+            values,
         )
