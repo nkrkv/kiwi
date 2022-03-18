@@ -33,10 +33,22 @@ export default function DoorPage() {
     return null;
   }, [doorId]);
 
-  function handleUserAccessSelected(userId) {
+  async function handleUserAccessSelected(user) {
     setUserDialogOpen(false);
-    console.log("user access granted", userId);
-    // TODO: request
+    const resp = await fetch(urls.api.doorPermissions(doorId), {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ user_ids: [user.id] }),
+    });
+
+    const newAuthorizedUsers = await resp.json();
+    setContent((content) =>
+      Object.assign({}, content, {
+        door: Object.assign({}, content.door, {
+          authorized_users: newAuthorizedUsers,
+        }),
+      })
+    );
   }
 
   if (content.stage === "ready") {

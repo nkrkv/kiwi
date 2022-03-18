@@ -9,6 +9,8 @@ export default {
 
     door: (doorId) => `${apiBaseUrl}/doors/${doorId}/`,
 
+    doorPermissions: (doorId) => `${apiBaseUrl}/doors/${doorId}/permissions/`,
+
     users: ({ q }) => `${apiBaseUrl}/users/?q=${q}`,
   },
 
