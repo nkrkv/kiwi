@@ -9,6 +9,7 @@ records = "*"
 uvicorn = {extras = ["standard"], version = "*"}
 psycopg2 = "*"
 redis = "*"
+pydantic = "*"
 
 [dev-packages]
 black = "*"

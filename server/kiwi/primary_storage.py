@@ -105,3 +105,13 @@ class Storage:
         return self.db.query(
             sql, offset=skip, limit=limit, pattern=query + "%"
         ).as_dict()
+
+    def grant_door_permissions(self, door_id: int, user_ids: list[int]):
+        values = [{"door_id": door_id, "user_id": user_id} for user_id in user_ids]
+        self.db.bulk_query(
+            """
+            INSERT INTO user_door_permissions (door_id, user_id)
+            VALUES (:door_id, :user_id)
+            """,
+            values
+        )

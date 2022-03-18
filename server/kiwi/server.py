@@ -3,6 +3,7 @@ import records
 import kiwi.primary_storage
 import kiwi.activity_storage
 
+from kiwi import models
 from fastapi import FastAPI, Response, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -28,6 +29,7 @@ async def root():
     return {
         "doors_url": "/doors/{?skip,limit}",
         "door_url": "/doors/{door_id}/",
+        "door_permissions_url": "/doors/{door_id}/permissions/",
         "users_url": "/users/{?skip,limit,q}/",
     }
 
@@ -62,6 +64,12 @@ async def door(door_id: int):
         "activity": activity,
         "authorized_users": users,
     }
+
+
+@app.put("/doors/{door_id}/permissions/")
+async def grant_door_permissions(door_id: int, user_batch: models.UserBatch):
+    primary_storage.grant_door_permissions(door_id, [id for id in user_batch.user_ids])
+    return primary_storage.read_authorized_users(door_id)
 
 
 @app.get("/users/")
