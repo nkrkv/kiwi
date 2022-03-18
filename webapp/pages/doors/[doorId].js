@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import DoorPageBody from "../../src/DoorPageBody";
 import Layout from "../../src/Layout";
+import UserSearchDialog from "../../src/UserSearchDialog";
 import urls from "../../src/urls";
 
 function fetchDoor(doorId) {
@@ -15,6 +16,8 @@ export default function DoorPage() {
   const [content, setContent] = useState({
     stage: "loading",
   });
+
+  const [isUserDialogOpen, setUserDialogOpen] = useState(false);
 
   useEffect(() => {
     if (typeof doorId !== "undefined") {
@@ -30,6 +33,12 @@ export default function DoorPage() {
     return null;
   }, [doorId]);
 
+  function handleUserAccessSelected(userId) {
+    setUserDialogOpen(false);
+    console.log("user access granted", userId);
+    // TODO: request
+  }
+
   if (content.stage === "ready") {
     return (
       <Layout
@@ -37,7 +46,16 @@ export default function DoorPage() {
         appBarTitle="Door Details"
         backButtonHref="/"
       >
-        <DoorPageBody door={content.door} />
+        <DoorPageBody
+          door={content.door}
+          onGrantAccessClick={() => setUserDialogOpen(true)}
+        />
+        <UserSearchDialog
+          title="Grant Access to..."
+          open={isUserDialogOpen}
+          onClose={() => setUserDialogOpen(false)}
+          onUserSelect={handleUserAccessSelected}
+        />
       </Layout>
     );
   } else {

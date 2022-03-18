@@ -1,6 +1,8 @@
 import Typography from "@material-ui/core/Typography";
+import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
+import AddIcon from "@material-ui/icons/Add";
 import DoorSummary from "./DoorSummary";
 import DoorActivity from "./DoorActivity";
 import DoorOnMap from "./DoorOnMap";
@@ -10,7 +12,7 @@ function NoUsers() {
   return <Typography variant="body2">No user can access this door</Typography>;
 }
 
-export default function DoorPage({ door }) {
+export default function DoorPage({ door, onGrantAccessClick }) {
   const title = `(#${door.id}) ${door.street}, ${door.name}`;
   const users = door.authorized_users;
   return (
@@ -38,6 +40,15 @@ export default function DoorPage({ door }) {
         <Typography variant="h4" component="h2" paragraph>
           Authorized Users
         </Typography>
+        <Button
+          color="secondary"
+          variant="contained"
+          startIcon={<AddIcon />}
+          size="small"
+          onClick={onGrantAccessClick}
+        >
+          Grant Access
+        </Button>
         {users.length > 0 ? <AuthorizedUserList users={users} /> : <NoUsers />}
       </Grid>
     </Grid>

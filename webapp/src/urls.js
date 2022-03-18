@@ -8,6 +8,8 @@ export default {
       `${apiBaseUrl}/doors/?skip=${skip}&limit=${limit}`,
 
     door: (doorId) => `${apiBaseUrl}/doors/${doorId}/`,
+
+    users: ({ q }) => `${apiBaseUrl}/users/?q=${q}`,
   },
 
   doorDetails: (doorId) => `/doors/${doorId}`,
