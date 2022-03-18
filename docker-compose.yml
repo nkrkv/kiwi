@@ -23,7 +23,21 @@ services:
     build: ./server
     container_name: kiwi-cc-server
     ports:
-      - "7100:8100"
+      - "8100:8100"
     environment:
       DATABASE_URL: "postgresql://kiwi@postgres:5432/kiwi"
       REDIS_URL: "redis://redis:6379/0"
+
+  webapp:
+    build:
+      context: ./webapp
+      args:
+        # API requests are done by user’s browser, so the base URL API URL
+        # should belong to the network visible by the browser, not the
+        # network created by docker-compose. For production deployment,
+        # the image should be built with a real API URL like
+        # https://api.kiwi.ki
+        NEXT_PUBLIC_API_BASE_URL: "http://localhost:8100"
+    container_name: kiwi-cc-webapp
+    ports:
+      - "8300:8300"
