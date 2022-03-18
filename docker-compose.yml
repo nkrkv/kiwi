@@ -18,3 +18,12 @@ services:
       - "6379:6379"
     volumes:
       - ./data/redis:/data
+
+  server:
+    build: ./server
+    container_name: kiwi-cc-server
+    ports:
+      - "7100:8100"
+    environment:
+      DATABASE_URL: "postgresql://kiwi@postgres:5432/kiwi"
+      REDIS_URL: "redis://redis:6379/0"

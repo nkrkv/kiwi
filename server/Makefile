@@ -10,4 +10,4 @@ prettify:
 
 .PHONY: install_deps
 install_deps:
-	pipenv install
+	pipenv install --dev

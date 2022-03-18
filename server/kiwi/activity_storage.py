@@ -5,6 +5,10 @@ class Storage:
     def __init__(self, db=None):
         self.db = db or redis.Redis()
 
+    @classmethod
+    def from_url(cls, url, **kwargs):
+        return cls(redis.Redis.from_url(url, **kwargs))
+
     def read(self, sensor_uuid):
         values = self.db.mget(
             [

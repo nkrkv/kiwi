@@ -1,3 +1,4 @@
+import os
 import records
 import kiwi.primary_storage
 import kiwi.activity_storage
@@ -6,7 +7,10 @@ from fastapi import FastAPI, Response, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 
 primary_storage = kiwi.primary_storage.Storage()
-activity_storage = kiwi.activity_storage.Storage()
+activity_storage = kiwi.activity_storage.Storage.from_url(
+    os.environ.get("REDIS_URL") or "redis://localhost:6379/0"
+)
+
 app = FastAPI()
 
 app.add_middleware(
