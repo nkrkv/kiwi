@@ -115,3 +115,14 @@ class Storage:
             """,
             values,
         )
+
+    def revoke_door_permissions(self, door_id: int, user_ids: list[int]):
+        self.db.bulk_query(
+            """
+            DELETE FROM user_door_permissions
+            WHERE
+              door_id = :door_id AND
+              user_id IN :user_ids
+            """,
+            {"door_id": door_id, "user_ids": tuple(user_ids)},
+        )

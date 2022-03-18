@@ -72,6 +72,12 @@ async def grant_door_permissions(door_id: int, user_batch: models.UserBatch):
     return primary_storage.read_authorized_users(door_id)
 
 
+@app.delete("/doors/{door_id}/permissions/")
+async def revoke_door_permissions(door_id: int, user_batch: models.UserBatch):
+    primary_storage.revoke_door_permissions(door_id, [id for id in user_batch.user_ids])
+    return primary_storage.read_authorized_users(door_id)
+
+
 @app.get("/users/")
 async def users(response: Response, skip: int = 0, limit: int = 10, q: str = ""):
     return primary_storage.read_users(skip=skip, limit=limit, query=q)
