@@ -7,3 +7,7 @@ dev:
 .PHONY: prettify
 prettify:
 	pipenv run black .
+
+.PHONY: install_deps
+install_deps:
+	pipenv install

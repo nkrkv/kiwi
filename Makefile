@@ -11,3 +11,8 @@ dev_webapp:
 prettify:
 	$(MAKE) --directory=server prettify
 	$(MAKE) --directory=webapp prettify
+
+.PHONY: install_deps
+install_deps:
+	$(MAKE) --directory=server install_deps
+	$(MAKE) --directory=webapp install_deps
